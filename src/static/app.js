@@ -1,3 +1,5 @@
+import { createSharingControls } from "./sharing.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   // DOM elements
   const activitiesList = document.getElementById("activities-list");
@@ -40,6 +42,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let searchQuery = "";
   let currentDay = "";
   let currentTimeRange = "";
+  const sharedActivity = new URLSearchParams(window.location.search).get("activity");
+  let sharedActivityPending = Boolean(sharedActivity);
 
   // Authentication state
   let currentUser = null;
@@ -402,6 +406,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Apply search and filter, and handle weekend filter in client
       displayFilteredActivities();
+
+      if (sharedActivityPending) {
+        sharedActivityPending = false;
+        const sharedCard = Array.from(activitiesList.children).find(
+          (card) => card.dataset.activity === sharedActivity
+        );
+        if (sharedCard) {
+          sharedCard.tabIndex = -1;
+          sharedCard.focus({ preventScroll: true });
+          sharedCard.scrollIntoView({ block: "center" });
+        } else {
+          showMessage("The shared activity is no longer available. Browse the activities below.", "info");
+        }
+      }
     } catch (error) {
       activitiesList.innerHTML =
         "<p>Failed to load activities. Please try again later.</p>";
@@ -476,6 +494,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderActivityCard(name, details) {
     const activityCard = document.createElement("div");
     activityCard.className = "activity-card";
+    activityCard.dataset.activity = name;
+    if (name === sharedActivity) {
+      activityCard.classList.add("shared-activity");
+    }
 
     // Calculate spots and capacity
     const totalSpots = details.max_participants;
@@ -570,6 +592,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       </div>
     `;
+
+    activityCard.appendChild(createSharingControls(name, formattedSchedule));
 
     // Add click handlers for delete buttons
     const deleteButtons = activityCard.querySelectorAll(".delete-participant");
