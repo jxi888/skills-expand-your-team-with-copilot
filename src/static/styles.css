@@ -216,6 +216,62 @@ section h3 {
   justify-content: center;
 }
 
+.activity-card.shared-activity {
+  border-color: var(--primary);
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.activity-sharing {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.sharing-label,
+.sharing-status {
+  width: 100%;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.share-link,
+.copy-link-button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 6px 10px;
+  background-color: var(--primary);
+  color: var(--primary-text);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+
+.share-link:hover,
+.copy-link-button:hover {
+  background-color: var(--primary-light);
+}
+
+.share-link:focus-visible,
+.copy-link-button:focus-visible,
+.manual-share-link:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.manual-share-link {
+  width: 100%;
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
 /* Activity Tag */
 .activity-tag {
   position: absolute;
